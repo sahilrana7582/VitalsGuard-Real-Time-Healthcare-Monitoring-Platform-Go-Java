@@ -29,7 +29,7 @@ func NewAuthRoutes(h *handler.AuthHandler) http.Handler {
 
 	r.Route("/", func(r chi.Router) {
 		r.Post("/signup", apicommon.ErrorHandler(h.SignUp))
-		// r.Post("/login", apicommon.ErrorHandler(h.Login))
+		r.Post("/login", apicommon.ErrorHandler(h.Login))
 	})
 
 	return r

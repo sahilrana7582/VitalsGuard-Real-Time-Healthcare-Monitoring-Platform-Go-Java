@@ -33,3 +33,17 @@ func (h *AuthHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
 
 	return apicommon.WriteSuccess(w, http.StatusCreated, "User Signed Up", res)
 }
+
+func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) error {
+	var req dto.LoginRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		return errs.ErrBadRequest
+	}
+
+	res, err := h.service.Login(r.Context(), &req)
+	if err != nil {
+		return err
+	}
+
+	return apicommon.WriteSuccess(w, http.StatusOK, "Login successful", res)
+}

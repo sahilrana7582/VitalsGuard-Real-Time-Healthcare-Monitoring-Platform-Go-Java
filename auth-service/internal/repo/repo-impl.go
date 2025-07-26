@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sahilrana7582/vitals-guard/auth-service/internal/dto"
+	"github.com/sahilrana7582/vitals-guard/auth-service/internal/models"
 )
 
 type authRepo struct {
@@ -55,4 +56,30 @@ func (r *authRepo) CreateUser(ctx context.Context, req *dto.SignUpRequest) (*dto
 	return &dto.SignUpResponse{
 		Message: fmt.Sprintf("User created successfully with ID: %s", userID),
 	}, nil
+}
+
+func (r *authRepo) Login(ctx context.Context, req dto.LoginRequest) (*models.User, error) {
+	query := `
+		SELECT id, name, email, password_hash, tenant_id
+		FROM users
+		WHERE email = $1 AND tenant_id = $2
+		LIMIT 1
+	`
+
+	var user models.User
+	err := r.db.QueryRow(ctx, query, req.Email, req.TenantID).Scan(
+		&user.ID,
+		&user.Name,
+		&user.Email,
+		&user.PasswordHash,
+		&user.TenantID,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, errors.New("invalid email or tenant ID")
+		}
+		return nil, err
+	}
+
+	return &user, nil
 }

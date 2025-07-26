@@ -8,5 +8,5 @@ import (
 
 type IAuthService interface {
 	SignUp(ctx context.Context, req *dto.SignUpRequest) (*dto.SignUpResponse, error)
-	// Login(ctx context.Context, req *dto.LoginRequest) (*dto.LoginResponse, error)
+	Login(ctx context.Context, req *dto.LoginRequest) (*dto.LoginResponse, error)
 }
