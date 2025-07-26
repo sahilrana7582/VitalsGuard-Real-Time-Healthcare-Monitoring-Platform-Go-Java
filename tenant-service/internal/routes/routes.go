@@ -29,6 +29,7 @@ func TenantRoutes(h *handler.TenantHandler) http.Handler {
 
 	r.Route("/", func(r chi.Router) {
 		r.Post("/", apicommon.ErrorHandler(h.CreateTenant))
+		r.Post("/profile", apicommon.ErrorHandler(h.CreateTenantProfile))
 	})
 
 	return r

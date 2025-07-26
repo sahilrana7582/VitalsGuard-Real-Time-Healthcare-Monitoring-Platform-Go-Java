@@ -8,4 +8,5 @@ import (
 
 type ITenantService interface {
 	CreateTenant(ctx context.Context, dto *repo.TenantCreateDTO) (*repo.Tenant, error)
+	CreateTenantProfile(ctx context.Context, dto *repo.TenantProfileCreateDTO) (*repo.TenantProfile, error)
 }

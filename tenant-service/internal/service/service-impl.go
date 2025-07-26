@@ -23,3 +23,7 @@ func (s *tenantService) CreateTenant(ctx context.Context, dto *repo.TenantCreate
 
 	return tenant, nil
 }
+
+func (s *tenantService) CreateTenantProfile(ctx context.Context, dto *repo.TenantProfileCreateDTO) (*repo.TenantProfile, error) {
+	return s.repo.CreateTenantProfile(ctx, *dto)
+}

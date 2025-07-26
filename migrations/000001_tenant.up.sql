@@ -26,8 +26,6 @@ CREATE TABLE tenant_profiles (
     gst_number TEXT UNIQUE,
     license_number TEXT UNIQUE,
 
-    logo_url TEXT,
-    website TEXT,
 
     emergency_contact TEXT,
 

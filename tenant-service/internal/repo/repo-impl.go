@@ -63,3 +63,61 @@ func (r *repo) CreateTenant(ctx context.Context, dto *TenantCreateDTO) (*Tenant,
 
 	return &tenant, nil
 }
+
+func (r *repo) CreateTenantProfile(ctx context.Context, profileDTO TenantProfileCreateDTO) (*TenantProfile, error) {
+	var tenantProfile TenantProfile
+
+	query := `
+		INSERT INTO tenant_profiles (
+			tenant_id, legal_name, address,
+			city, state, country,
+			postal_code, gst_number, license_number, emergency_contact
+		)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+		RETURNING 
+			id, tenant_id, legal_name, address, 
+			city, state, country, postal_code, 
+			gst_number, license_number, emergency_contact,
+			created_at, updated_at;
+	`
+
+	row := r.db.QueryRow(ctx, query,
+		profileDTO.TenantID,
+		profileDTO.LegalName,
+		profileDTO.Address,
+		profileDTO.City,
+		profileDTO.State,
+		profileDTO.Country,
+		profileDTO.PostalCode,
+		profileDTO.GSTNumber,
+		profileDTO.LicenseNumber,
+		profileDTO.EmergencyContact,
+	)
+
+	err := row.Scan(
+		&tenantProfile.ID,
+		&tenantProfile.TenantID,
+		&tenantProfile.LegalName,
+		&tenantProfile.Address,
+		&tenantProfile.City,
+		&tenantProfile.State,
+		&tenantProfile.Country,
+		&tenantProfile.PostalCode,
+		&tenantProfile.GSTNumber,
+		&tenantProfile.LicenseNumber,
+		&tenantProfile.EmergencyContact,
+		&tenantProfile.CreatedAt,
+		&tenantProfile.UpdatedAt,
+	)
+	if err != nil {
+		if errors.Is(err, context.Canceled) {
+			return nil, fmt.Errorf("request canceled: %w", err)
+		}
+		if errors.Is(err, context.DeadlineExceeded) {
+			return nil, fmt.Errorf("request timed out: %w", err)
+		}
+		return nil, fmt.Errorf("failed to insert tenant profile: %w", err)
+	}
+
+	return &tenantProfile, nil
+}

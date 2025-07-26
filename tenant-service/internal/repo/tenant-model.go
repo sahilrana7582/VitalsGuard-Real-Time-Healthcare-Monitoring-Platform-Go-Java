@@ -23,8 +23,6 @@ type TenantProfile struct {
 	PostalCode       string
 	GSTNumber        *string
 	LicenseNumber    *string
-	LogoURL          *string
-	Website          *string
 	EmergencyContact *string
 	CreatedAt        time.Time
 	UpdatedAt        time.Time

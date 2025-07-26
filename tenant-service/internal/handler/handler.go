@@ -32,3 +32,22 @@ func (h *TenantHandler) CreateTenant(w http.ResponseWriter, r *http.Request) err
 
 	return apicommon.WriteSuccess(w, http.StatusCreated, "Tenant created successfully", tenant)
 }
+
+func (h *TenantHandler) CreateTenantProfile(w http.ResponseWriter, r *http.Request) error {
+	var dto repo.TenantProfileCreateDTO
+
+	if err := json.NewDecoder(r.Body).Decode(&dto); err != nil {
+		return errs.New("Invalid JSON body", "INVALID_JSON", http.StatusBadRequest)
+	}
+
+	if dto.TenantID == "" || dto.LegalName == "" || dto.Address == "" || dto.City == "" || dto.Country == "" {
+		return errs.New("Missing required fields", "VALIDATION_ERROR", http.StatusBadRequest)
+	}
+
+	profile, appErr := h.service.CreateTenantProfile(r.Context(), &dto)
+	if appErr != nil {
+		return appErr
+	}
+
+	return apicommon.WriteSuccess(w, http.StatusCreated, "Tenant profile created successfully", profile)
+}
