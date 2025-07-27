@@ -34,3 +34,36 @@ func (h *StaffHandler) CreateStaff(w http.ResponseWriter, r *http.Request) error
 
 	return apicommon.WriteSuccess(w, http.StatusCreated, "New staff addeed", resp)
 }
+
+func (h *StaffHandler) CreateDoctor(w http.ResponseWriter, r *http.Request) error {
+	var payload dto.NewDoctorDTO
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		return errs.New("BAD_REQUEST", "Invalid Request Body", http.StatusBadRequest)
+	}
+	defer r.Body.Close()
+
+	resp, err := h.service.RegisterDoctor(r.Context(), payload)
+
+	if err != nil {
+		return err
+	}
+
+	return apicommon.WriteSuccess(w, http.StatusCreated, "Doctore register successfully", resp)
+}
+
+func (h *StaffHandler) CreateNurse(w http.ResponseWriter, r *http.Request) error {
+	var payload dto.NewNurseDTO
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		return errs.New("BAD_REQUEST", "Invalid Request Body", http.StatusBadRequest)
+
+	}
+	defer r.Body.Close()
+
+	resp, err := h.service.RegisterNurse(r.Context(), payload)
+
+	if err != nil {
+		return err
+	}
+
+	return apicommon.WriteSuccess(w, http.StatusCreated, resp.Message, resp)
+}

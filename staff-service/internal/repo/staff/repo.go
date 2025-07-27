@@ -8,6 +8,6 @@ import (
 
 type IStaffRepo interface {
 	CreateStaff(ctx context.Context, payload dto.NewStaffDTO) error
-	// CreateDoctor(ctx context.Context, payload dto.NewDoctorDTO) error
-	// CreateNurse(ctx context.Context, payload dto.NewNurseDTO) error
+	CreateDoctor(ctx context.Context, payload dto.NewDoctorDTO) error
+	CreateNurse(ctx context.Context, payload dto.NewNurseDTO) error
 }

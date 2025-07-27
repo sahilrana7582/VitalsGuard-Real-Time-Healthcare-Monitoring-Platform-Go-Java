@@ -26,28 +26,22 @@ func (s *staffService) CreateStaff(ctx context.Context, input dto.NewStaffDTO) (
 	return &dto.StaffDTOResponse{Message: "Staff created successfully"}, nil
 }
 
-// func (s *staffService) RegisterDoctor(ctx context.Context, input dto.NewDoctorDTO) (*dto.DoctorDTOResponse, error) {
-// 	if input.TenantID == "" || input.StaffID == "" || input.Specialization == "" {
-// 		return nil, errors.New("tenant_id, staff_id, and specialization are required fields")
-// 	}
+func (s *staffService) RegisterDoctor(ctx context.Context, input dto.NewDoctorDTO) (*dto.DoctorDTOResponse, error) {
 
-// 	err := s.repo.CreateDoctor(ctx, input)
-// 	if err != nil {
-// 		return nil, fmt.Errorf("failed to register doctor: %w", err)
-// 	}
+	err := s.repo.CreateDoctor(ctx, input)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return &dto.DoctorDTOResponse{Message: "Doctor registered successfully"}, nil
-// }
+	return &dto.DoctorDTOResponse{Message: "Doctor registered successfully"}, nil
+}
 
-// func (s *staffService) RegisterNurse(ctx context.Context, input dto.NewNurseDTO) (*dto.NurseDTOResponse, error) {
-// 	if input.TenantID == "" || input.StaffID == "" || input.Shift == "" {
-// 		return nil, errors.New("tenant_id, staff_id, and shift are required fields")
-// 	}
+func (s *staffService) RegisterNurse(ctx context.Context, input dto.NewNurseDTO) (*dto.NurseDTOResponse, error) {
 
-// 	err := s.repo.CreateNurse(ctx, input)
-// 	if err != nil {
-// 		return nil, fmt.Errorf("failed to register nurse: %w", err)
-// 	}
+	err := s.repo.CreateNurse(ctx, input)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return &dto.NurseDTOResponse{Message: "Nurse registered successfully"}, nil
-// }
+	return &dto.NurseDTOResponse{Message: "Nurse registered successfully"}, nil
+}

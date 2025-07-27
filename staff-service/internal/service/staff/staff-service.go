@@ -9,7 +9,7 @@ import (
 type IStaffService interface {
 	CreateStaff(ctx context.Context, staff dto.NewStaffDTO) (*dto.StaffDTOResponse, error)
 
-	// RegisterDoctor(ctx context.Context, doctor dto.NewDoctorDTO) (*dto.DoctorDTOResponse, error)
+	RegisterDoctor(ctx context.Context, doctor dto.NewDoctorDTO) (*dto.DoctorDTOResponse, error)
 
-	// RegisterNurse(ctx context.Context, nurse dto.NewNurseDTO) (*dto.NurseDTOResponse, error)
+	RegisterNurse(ctx context.Context, nurse dto.NewNurseDTO) (*dto.NurseDTOResponse, error)
 }

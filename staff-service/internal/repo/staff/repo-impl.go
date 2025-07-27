@@ -46,3 +46,53 @@ func (r *staffRepo) CreateStaff(ctx context.Context, payload dto.NewStaffDTO) er
 
 	return nil
 }
+
+func (r *staffRepo) CreateDoctor(ctx context.Context, payload dto.NewDoctorDTO) error {
+	query := `
+		INSERT INTO doctors (
+			tenant_id, staff_id, specialization, license_number, years_of_experience
+		)
+		VALUES (
+			$1, $2, $3, $4, $5
+		)
+	`
+
+	_, err := r.db.Exec(ctx, query,
+		payload.TenantID,
+		payload.StaffID,
+		payload.Specialization,
+		payload.LicenseNumber,
+		payload.YearsOfExperience,
+	)
+
+	if err != nil {
+		return errs.New("DATABASE_ERROR", "DB ERROR: "+err.Error(), http.StatusInternalServerError)
+
+	}
+
+	return nil
+}
+
+func (r *staffRepo) CreateNurse(ctx context.Context, payload dto.NewNurseDTO) error {
+	query := `
+		INSERT INTO nurses (
+			tenant_id, staff_id, shift, floor_assigned
+		)
+		VALUES (
+			$1, $2, $3, $4
+		)
+	`
+
+	_, err := r.db.Exec(ctx, query,
+		payload.TenantID,
+		payload.StaffID,
+		payload.Shift,
+		payload.FloorAssigned,
+	)
+
+	if err != nil {
+		return errs.New("DATABASE_ERROR", "DB ERROR: "+err.Error(), http.StatusInternalServerError)
+	}
+
+	return nil
+}

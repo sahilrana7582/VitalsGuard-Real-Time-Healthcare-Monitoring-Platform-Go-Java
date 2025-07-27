@@ -30,6 +30,8 @@ func NewStaffRoutes(staffHandler *handler.StaffHandler, roleHandler *handler.Rol
 
 		r.Route("/members", func(r chi.Router) {
 			r.Post("/", apicommon.ErrorHandler(staffHandler.CreateStaff))
+			r.Post("/doctor", apicommon.ErrorHandler(staffHandler.CreateDoctor))
+			r.Post("/nurse", apicommon.ErrorHandler(staffHandler.CreateNurse))
 			// r.Get("/", apicommon.ErrorHandler(staffHandler.GetAllStaff))
 			// r.Get("/{id}", apicommon.ErrorHandler(staffHandler.GetStaffByID))
 			// r.Put("/{id}", apicommon.ErrorHandler(staffHandler.UpdateStaff))

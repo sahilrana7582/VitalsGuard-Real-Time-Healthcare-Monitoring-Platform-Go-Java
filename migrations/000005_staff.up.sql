@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS doctors (
 
 CREATE TABLE IF NOT EXISTS nurses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
     staff_id UUID NOT NULL UNIQUE REFERENCES staff(id) ON DELETE CASCADE,
 
     shift TEXT CHECK (shift IN ('Day', 'Night', 'Rotational')),
