@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 	"vitals-guard/common/errs"
+	"vitals-guard/common/token"
 
 	"github.com/sahilrana7582/vitals-guard/auth-service/internal/dto"
 	"github.com/sahilrana7582/vitals-guard/auth-service/internal/hash"
 	"github.com/sahilrana7582/vitals-guard/auth-service/internal/repo"
-	"github.com/sahilrana7582/vitals-guard/auth-service/internal/token"
 )
 
 type authService struct {
