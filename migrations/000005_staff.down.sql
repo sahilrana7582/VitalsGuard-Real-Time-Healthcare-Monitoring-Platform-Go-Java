@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS nurses;
+
+DROP TABLE IF EXISTS doctors;
+
+DROP TABLE IF EXISTS staff;

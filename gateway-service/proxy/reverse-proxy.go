@@ -12,7 +12,7 @@ import (
 func New(target string) http.Handler {
 	targetURL, err := url.Parse(target)
 	if err != nil {
-		log.Fatalf("Error From Gateway | New Proxy: \n", err)
+		log.Fatal("Error From Gateway | New Proxy: \n", err.Error())
 	}
 
 	proxy := httputil.NewSingleHostReverseProxy(targetURL)

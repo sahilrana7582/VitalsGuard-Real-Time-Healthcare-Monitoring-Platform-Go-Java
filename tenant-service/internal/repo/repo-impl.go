@@ -55,10 +55,10 @@ func (r *repo) CreateTenant(ctx context.Context, dto *TenantCreateDTO) (*Tenant,
 			case "23514":
 				return nil, errs.New(fmt.Sprintf("Validation failed: %s", pgErr.Detail), "DB_VALIDATION_ERROR", http.StatusBadRequest)
 			default:
-				return nil, errs.ErrInternalServer
+				return nil, errs.New("Internal server error", "INTERNAL_ERROR", http.StatusInternalServerError)
 			}
 		}
-		return nil, errs.ErrInternalServer
+		return nil, errs.New("Internal server error", err.Error(), http.StatusInternalServerError)
 	}
 
 	return &tenant, nil
