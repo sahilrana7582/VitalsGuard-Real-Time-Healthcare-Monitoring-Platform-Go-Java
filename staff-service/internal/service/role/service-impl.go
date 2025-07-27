@@ -33,3 +33,14 @@ func (s *roleService) CreateRole(ctx context.Context, tenantID string, payload *
 		Message: "Role created successfully",
 	}, nil
 }
+
+func (s *roleService) AssignRole(ctx context.Context, tenantID, userID, roleID string) (*dto.AssignRoleResponse, error) {
+
+	err := s.repo.AssignRole(ctx, tenantID, userID, roleID)
+	if err != nil {
+		return nil, err
+	}
+	return &dto.AssignRoleResponse{
+		Message: "Role assigned successfully",
+	}, nil
+}

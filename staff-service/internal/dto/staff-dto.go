@@ -9,7 +9,6 @@ type NewStaffDTO struct {
 	ContactNumber string `json:"contact_number"`
 	Email         string `json:"email"`
 	Address       string `json:"address"`
-	Department    string `json:"department"`
 }
 
 type StaffDTOResponse struct {

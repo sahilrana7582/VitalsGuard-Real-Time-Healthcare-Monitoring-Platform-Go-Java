@@ -10,7 +10,7 @@ import (
 	"github.com/sahilrana7582/vitals-guard/staff-service/internal/handler"
 )
 
-func NewStaffRoutes(roleHandler *handler.RoleHandler) http.Handler {
+func NewStaffRoutes(staffHandler *handler.StaffHandler, roleHandler *handler.RoleHandler) http.Handler {
 	r := chi.NewRouter()
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
@@ -28,16 +28,17 @@ func NewStaffRoutes(roleHandler *handler.RoleHandler) http.Handler {
 
 	r.Route("/", func(r chi.Router) {
 
-		// r.Route("/members", func(r chi.Router) {
-		// 	r.Post("/", apicommon.ErrorHandler(staffHandler.CreateStaff))
-		// 	r.Get("/", apicommon.ErrorHandler(staffHandler.GetAllStaff))
-		// 	r.Get("/{id}", apicommon.ErrorHandler(staffHandler.GetStaffByID))
-		// 	r.Put("/{id}", apicommon.ErrorHandler(staffHandler.UpdateStaff))
-		// 	r.Delete("/{id}", apicommon.ErrorHandler(staffHandler.DeleteStaff))
-		// })
+		r.Route("/members", func(r chi.Router) {
+			r.Post("/", apicommon.ErrorHandler(staffHandler.CreateStaff))
+			// r.Get("/", apicommon.ErrorHandler(staffHandler.GetAllStaff))
+			// r.Get("/{id}", apicommon.ErrorHandler(staffHandler.GetStaffByID))
+			// r.Put("/{id}", apicommon.ErrorHandler(staffHandler.UpdateStaff))
+			// r.Delete("/{id}", apicommon.ErrorHandler(staffHandler.DeleteStaff))
+		})
 
 		r.Route("/roles", func(r chi.Router) {
 			r.Post("/", apicommon.ErrorHandler(roleHandler.CreateRole))
+			r.Post("/assign-role/{userID}/{roleID}", apicommon.ErrorHandler(roleHandler.AssignUserRole))
 			// r.Get("/", apicommon.ErrorHandler(roleHandler.GetAllRoles))
 			// r.Get("/{id}", apicommon.ErrorHandler(roleHandler.GetRoleByID))
 			// r.Put("/{id}", apicommon.ErrorHandler(roleHandler.UpdateRole))

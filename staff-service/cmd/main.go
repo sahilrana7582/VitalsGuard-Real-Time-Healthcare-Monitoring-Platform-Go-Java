@@ -12,8 +12,10 @@ import (
 	"github.com/sahilrana7582/vitals-guard/staff-service/internal/db"
 	"github.com/sahilrana7582/vitals-guard/staff-service/internal/handler"
 	roleRepo "github.com/sahilrana7582/vitals-guard/staff-service/internal/repo/role"
+	repo "github.com/sahilrana7582/vitals-guard/staff-service/internal/repo/staff"
 	"github.com/sahilrana7582/vitals-guard/staff-service/internal/routes"
 	roleService "github.com/sahilrana7582/vitals-guard/staff-service/internal/service/role"
+	service "github.com/sahilrana7582/vitals-guard/staff-service/internal/service/staff"
 )
 
 func main() {
@@ -26,7 +28,11 @@ func main() {
 	roleService := roleService.NewRoleService(roleRepo)
 	roleHandler := handler.NewRoleHandler(roleService)
 
-	routes := routes.NewStaffRoutes(roleHandler)
+	staffRepo := repo.NewStaffRepo(connPool)
+	staffService := service.NewStaffService(staffRepo)
+	staffHandler := handler.NewStaffHandler(staffService)
+
+	routes := routes.NewStaffRoutes(staffHandler, roleHandler)
 
 	server := &http.Server{
 		Addr:         ":" + cfg.PORT,

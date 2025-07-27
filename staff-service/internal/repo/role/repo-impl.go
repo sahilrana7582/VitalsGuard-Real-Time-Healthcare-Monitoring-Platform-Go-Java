@@ -59,3 +59,24 @@ func (r *roleRepo) CreateRole(ctx context.Context, role *dto.NewRoleDTO) error {
 
 	return nil
 }
+
+func (r *roleRepo) AssignRole(ctx context.Context, tenantID, userID, roleID string) error {
+	query := `
+		INSERT INTO user_roles (user_id, role_id)
+		SELECT u.id, $2
+		FROM users u
+		WHERE u.id = $1 AND u.tenant_id = $3
+		ON CONFLICT DO NOTHING
+	`
+
+	tag, err := r.db.Exec(ctx, query, userID, roleID, tenantID)
+	if err != nil {
+		return err
+	}
+
+	if tag.RowsAffected() == 0 {
+		return errs.New("NO_INSERTION", "Maybe either user or role does not exits", http.StatusBadRequest)
+	}
+
+	return nil
+}

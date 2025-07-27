@@ -9,3 +9,7 @@ type NewRoleDTO struct {
 type RoleDTOResponse struct {
 	Message string `json:"message"`
 }
+
+type AssignRoleResponse struct {
+	Message string `json:"message"`
+}
