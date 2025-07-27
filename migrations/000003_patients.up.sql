@@ -57,27 +57,3 @@ CREATE TABLE IF NOT EXISTS vitals_info (
 );
 
 
-CREATE OR REPLACE FUNCTION authorize_patient_write()
-RETURNS TRIGGER AS $$
-DECLARE
-    user_role TEXT;
-    user_tenant UUID;
-BEGIN
-    -- Fetch role and tenant from users table
-    SELECT role, tenant_id INTO user_role, user_tenant
-    FROM users
-    WHERE id = current_setting('app.user_id')::UUID;
-
-    -- Check if tenant matches
-    IF NEW.tenant_id IS DISTINCT FROM user_tenant THEN
-        RAISE EXCEPTION 'Unauthorized: tenant mismatch';
-    END IF;
-
-    -- Check role
-    IF user_role NOT IN ('doctor', 'nurse') THEN
-        RAISE EXCEPTION 'Unauthorized: insufficient privileges';
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;

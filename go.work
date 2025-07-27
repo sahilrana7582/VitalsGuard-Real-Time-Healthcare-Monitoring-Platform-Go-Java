@@ -7,4 +7,5 @@ use (
 	./patient-service
 	./staff-service
 	./tenant-service
+	./vitals-ingestor-service
 )
