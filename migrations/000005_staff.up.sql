@@ -40,3 +40,43 @@ CREATE TABLE IF NOT EXISTS nurses (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+
+
+CREATE OR REPLACE FUNCTION authorize_patient_write()
+RETURNS TRIGGER AS $$
+DECLARE
+    user_role TEXT;
+    user_tenant UUID;
+BEGIN
+    SELECT role, tenant_id INTO user_role, user_tenant
+    FROM users
+    WHERE id = current_setting('app.user_id')::UUID;
+
+    IF NEW.tenant_id IS DISTINCT FROM user_tenant THEN
+        RAISE EXCEPTION 'Unauthorized: tenant mismatch';
+    END IF;
+
+    IF user_role NOT IN ('doctor', 'nurse') THEN
+        RAISE EXCEPTION 'Unauthorized: insufficient privileges';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER patient_insert_trigger
+BEFORE INSERT ON patients
+FOR EACH ROW
+EXECUTE FUNCTION authorize_patient_write();
+
+
+CREATE TRIGGER patient_update_trigger
+BEFORE UPDATE ON patients
+FOR EACH ROW
+EXECUTE FUNCTION authorize_patient_write();
+
+CREATE TRIGGER patient_delete_trigger
+BEFORE DELETE ON patients
+FOR EACH ROW
+EXECUTE FUNCTION authorize_patient_write();

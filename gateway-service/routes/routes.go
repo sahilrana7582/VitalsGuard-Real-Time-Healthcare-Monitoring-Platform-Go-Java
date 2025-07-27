@@ -9,12 +9,12 @@ import (
 
 func RegisterRoutes(mux *http.ServeMux) {
 	routes := map[string]string{
-		"/api/tenants/": "http://localhost:8000",
-		"/api/auth/":    "http://localhost:8001",
-		"/api/staff/":   "http://localhost:8003",
+		"/api/tenants/":  "http://localhost:8000",
+		"/api/auth/":     "http://localhost:8001",
+		"/api/patients/": "http://localhost:8002",
+		"/api/staff/":    "http://localhost:8003",
 
 		// "/api/users/":      "http://localhost:8001",
-		// "/api/department/": "http://localhost:8002",
 		// "/api/permission/": "http://localhost:8005",
 		// "/api/rooms/":      "http://localhost:8006",
 	}
