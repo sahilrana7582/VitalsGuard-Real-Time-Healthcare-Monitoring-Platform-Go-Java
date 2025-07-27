@@ -20,7 +20,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
 
-		if tokenStr != "" {
+		if tokenStr == "" {
 			apicommon.WriteError(w, errs.New("ERR_UNAUTHORIZED", "Authorization header missing", http.StatusUnauthorized), http.StatusUnauthorized)
 			return
 		}
@@ -32,8 +32,10 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		tenantID := jwtClaims.TenantID
+		userID := jwtClaims.UserID
 
 		r.Header.Set("X-Tenant-ID", tenantID)
+		r.Header.Set("X-User-ID", userID)
 
 		next.ServeHTTP(w, r)
 

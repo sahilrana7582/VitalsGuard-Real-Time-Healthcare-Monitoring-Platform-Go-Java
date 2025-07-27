@@ -13,12 +13,14 @@ var jwtSecretKey = []byte("My Super Secret Key | BuLu LuLu KuLu MuLu SuLu")
 
 type JwtClaims struct {
 	TenantID string `json:"tenant_id"`
+	UserID   string `json:"user_id"`
 	jwt.RegisteredClaims
 }
 
-func GenerateToken(tenantID string) (string, error) {
+func GenerateToken(tenantID, userID string) (string, error) {
 	claims := JwtClaims{
 		TenantID: tenantID,
+		UserID:   userID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),

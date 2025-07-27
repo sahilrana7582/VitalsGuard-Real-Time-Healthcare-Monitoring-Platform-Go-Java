@@ -46,7 +46,7 @@ func (s *authService) Login(ctx context.Context, req *dto.LoginRequest) (*dto.Lo
 		return nil, errs.ErrUnauthorized
 	}
 
-	token, err := token.GenerateToken(user.TenantID)
+	token, err := token.GenerateToken(user.TenantID, user.ID)
 	if err != nil {
 		return nil, errs.ErrInternalServer
 	}
